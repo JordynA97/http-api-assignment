@@ -15,7 +15,7 @@
   //start the request here!
   const sendRequest = (url, type) => {
     const sentReq = new XMLHttpRequest();
-    
+    console.dir(`Get request to ${url}`)
     sentReq.open('GET', url);
     sentReq.setRequestHeader('Accept', type);
     sentReq.onload = () => handleResponse(sentReq);
@@ -33,7 +33,7 @@
       //send our request with needed params
       sendRequest(dropdownUrl, dropdownType);
     }
-    //sendButton.addEventListener('click', createRequest);
+    sendButton.addEventListener('click', createRequest);
   }
 
   window.onload = init;
@@ -56,7 +56,7 @@
       <option value="application/json">JSON</option>
       <option value="text/xml">XML</option>
     </select>
-    <button id="send" onclick="createRequest()">Send</button>
+    <button id="send">Send</button>
   </section>
   <section id="content">
   </section>
