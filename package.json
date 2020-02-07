@@ -1,0 +1,32 @@
+{
+  "name": "http-api-assignment",
+  "version": "1.0.0",
+  "engines": {
+    "node": "12.14.1",
+    "npm": "6.9.0"
+  },
+  "description": "HTTP api assignment one",
+  "main": "server.js",
+  "scripts": {
+    "start": "node ./src/server.js",
+    "pretest": "eslint ./src --fix",
+    "test": "echo \"Completed Tests\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JordynA97/http-api-assignment.git"
+  },
+  "dependencies": {
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint": "^6.4.0",
+    "eslint-plugin-import": "^2.18.2"
+  },
+  "devDependencies": {},
+  "author": "Jordyn",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JordynA97/http-api-assignment/issues"
+  },
+  "homepage": "https://github.com/JordynA97/http-api-assignment#readme"
+
+}
