@@ -7,6 +7,37 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
   <script type="text/babel">
 
+  //make xml http request
+  const handleResponse = (xhr) => {
+    console.dir(xhr.response);
+  };
+
+  //start the request here!
+  const sendRequest = (url, type) => {
+    const sentReq = new XMLHttpRequest();
+    
+    sentReq.open('GET', url);
+    sentReq.setRequestHeader('Accept', type);
+    sentReq.onload = () => handleResponse(sentReq);
+    sentReq.send();
+  }
+
+  const init = () => {
+    const sendButton = document.getElementById('send');
+
+    const createRequest = () => {
+      //need the info from the dropdowns for our request
+      const dropdownUrl = document.getElementById('page').value;
+      const dropdownType = document.getElementById('type').value;
+
+      //send our request with needed params
+      sendRequest(dropdownUrl, dropdownType);
+    }
+    //sendButton.addEventListener('click', createRequest);
+  }
+
+  window.onload = init;
+
   </script>
 </head>
 <body>
@@ -25,7 +56,7 @@
       <option value="application/json">JSON</option>
       <option value="text/xml">XML</option>
     </select>
-    <button id="send">Send</button>
+    <button id="send" onclick="createRequest()">Send</button>
   </section>
   <section id="content">
   </section>
