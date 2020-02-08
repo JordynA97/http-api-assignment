@@ -15,6 +15,7 @@ const urlStruct = {
     '/unauthorized': jsonHandler.unauthorized,
     '/forbidden': jsonHandler.forbidden,
     '/internal': jsonHandler.internal,
+    '/notImplemented': jsonHandler.notImplemented,
     notFound: jsonHandler.notFound, // 404
   },
   HEAD: {
@@ -30,6 +31,8 @@ const onRequest = (request, response) => {
 
   if (urlStruct[request.method][parsedUrl.pathname]) {
     urlStruct[request.method][parsedUrl.pathname](request, response, type, params);
+  } else{
+    urlStruct[request.method].notFound(request, response, type, params);
   }
 };
 

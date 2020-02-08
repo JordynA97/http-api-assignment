@@ -9,13 +9,14 @@
 
   //make xml http request
   const handleResponse = (xhr) => {
-    console.dir(xhr.response);
+    console.log(xhr);
+    document.querySelector('h1').innerHTML = `${xhr.statusText}: ${xhr.status}`;
+    document.querySelector('h2').innerHTML = `Message: ${JSON.parse(xhr.response).message}`;
   };
 
   //start the request here!
   const sendRequest = (url, type) => {
     const sentReq = new XMLHttpRequest();
-    console.dir(`Get request to ${url}`)
     sentReq.open('GET', url);
     sentReq.setRequestHeader('Accept', type);
     sentReq.onload = () => handleResponse(sentReq);
@@ -59,6 +60,8 @@
     <button id="send">Send</button>
   </section>
   <section id="content">
+    <h1></h1>
+    <h2></h2>
   </section>
 </body>
 </html>

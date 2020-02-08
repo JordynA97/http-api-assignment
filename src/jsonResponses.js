@@ -5,6 +5,7 @@ const respond = (request, response, status, data, type) => {
     }else {
         data = JSON.stringify(data);
     }
+    
   response.writeHead(status, { 'Content-Type': type });
   response.write(data);
   response.end();
@@ -41,12 +42,12 @@ const badRequest = (request, response, type, params) => {
     let responseJSON = {};
   if (!params || !params.valid || params.valid !== true) {
       responseJSON = {
-          message: 'Bad Request / 400',
+          message: 'Bad Request',
           id: 'badRequest'
       };
   } else {
     responseJSON = {
-        message: 'Success / 200',
+        message: 'Success',
         id: 'badRequest'
     };
   }
@@ -55,7 +56,7 @@ const badRequest = (request, response, type, params) => {
 
 const forbidden = (request, response, type) => {
   const responseJSON = {
-    message: '403 Forbidden',
+    message: 'Forbidden',
     id: 'forbidden',
   };
   respond(request, response, 403, responseJSON, type);
@@ -79,7 +80,16 @@ const internal = (request, response, type) => {
     respond(request, response, 500, responseJSON, type);
   };
 
+const notImplemented = (request, response, type) => {
+    const responseJSON = {
+      message: 'This has not been implemented yet, check back soon for updates',
+      id: 'notImplemented',
+    };
+  
+    respond(request, response, 501, responseJSON, type);
+  };
+
 // export all responses
 module.exports = {
-  success, badRequest, notFound, forbidden, unauthorized, internal, 
+  success, badRequest, notFound, forbidden, unauthorized, internal, notImplemented,
 };
