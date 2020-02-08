@@ -1,4 +1,10 @@
 const respond = (request, response, status, data, type) => {
+    //differentiate between types
+    if(type === 'text/xml'){
+        data = `<response><message>${data.message}</message><id>${data.id}</id></response>`;
+    }else {
+        data = JSON.stringify(data);
+    }
   response.writeHead(status, { 'Content-Type': type });
   response.write(data);
   response.end();
@@ -6,64 +12,74 @@ const respond = (request, response, status, data, type) => {
 
 // want different interactions for different responses/server reactions
 const success = (request, response, type) => {
-  if (type === 'text/xml') {
-    const responseXML = '<response><message>Successful Message</message></response>';
-    return respond(request, response, 200, responseXML, 'text/xml');
-  }
-
-  // send back the json
   const responseJSON = {
     message: 'Successful Message',
   };
 
-  // let JSONString = JSON.stringify(responseJSON);
-
-  return respond(request, response, 200, responseJSON, 'application/json');
+  return respond(request, response, 200, responseJSON, type);
 };
 
-const unauthorized = (request, response, params) => {
+const unauthorized = (request, response, type, params) => {
+    let responseJSON = {};
   if (params.loggedIn === 'yes') {
-    const responseJSON = {
-      message: 'access granted',
+    responseJSON = {
+      message: 'Access Granted',
       id: 'unauthorized',
     };
+    respond(request, response, 200, responseJSON, type);
 
-    respond(request, response, 200, responseJSON);
   } else {
-    const responseJSON = {
-      message: 'page not found',
+    responseJSON = {
+      message: 'Page not found ',
       id: 'unauthorized',
     };
-    respond(request, response, 401, responseJSON);
+    respond(request, response, 401, responseJSON, type);
   }
 };
 
 const badRequest = (request, response, type, params) => {
-  if (!params.valid || params.valid !== true) {
-    // reponseJSON.message = 'BadRequest/404';
+    let responseJSON = {};
+  if (!params || !params.valid || params.valid !== true) {
+      responseJSON = {
+          message: 'Bad Request / 400',
+          id: 'badRequest'
+      };
   } else {
-    // reponseJSON.message = '200';
+    responseJSON = {
+        message: 'Success / 200',
+        id: 'badRequest'
+    };
   }
+  respond(request, response, 400, responseJSON, type);
 };
 
-const forbidden = (request, response) => {
+const forbidden = (request, response, type) => {
   const responseJSON = {
     message: '403 Forbidden',
     id: 'forbidden',
   };
-  respond(request, response, 403, responseJSON);
+  respond(request, response, 403, responseJSON, type);
 };
 
-const notFound = (request, response) => {
+const notFound = (request, response, type) => {
   const responseJSON = {
-    message: 'page not found',
+    message: 'Page not found',
     id: 'notFound',
   };
 
-  respond(request, response, 404, responseJSON);
+  respond(request, response, 404, responseJSON, type);
 };
+
+const internal = (request, response, type) => {
+    const responseJSON = {
+      message: 'Internal server error, something went wrong',
+      id: 'internal',
+    };
+  
+    respond(request, response, 500, responseJSON, type);
+  };
 
 // export all responses
 module.exports = {
-  success, badRequest, notFound, forbidden, unauthorized,
+  success, badRequest, notFound, forbidden, unauthorized, internal, 
 };

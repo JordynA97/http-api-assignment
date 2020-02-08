@@ -1,5 +1,6 @@
 const http = require('http');
 const url = require('url');
+const query = require('query-string');
 const htmlHandler = require('./htmlResponses.js');// handler for html responses
 const jsonHandler = require('./jsonResponses.js');// handler for json responses
 
@@ -10,6 +11,10 @@ const urlStruct = {
     '/': htmlHandler.getIndex,
     '/style.css': htmlHandler.getStyle,
     '/success': jsonHandler.success,
+    '/badRequest': jsonHandler.badRequest,
+    '/unauthorized': jsonHandler.unauthorized,
+    '/forbidden': jsonHandler.forbidden,
+    '/internal': jsonHandler.internal,
     notFound: jsonHandler.notFound, // 404
   },
   HEAD: {
@@ -21,9 +26,10 @@ const urlStruct = {
 const onRequest = (request, response) => {
   const parsedUrl = url.parse(request.url);
   const type = request.headers.accept.split(',')[0];
+  const params = query.parse(parsedUrl.query)
 
   if (urlStruct[request.method][parsedUrl.pathname]) {
-    urlStruct[request.method][parsedUrl.pathname](request, response, type);
+    urlStruct[request.method][parsedUrl.pathname](request, response, type, params);
   }
 };
 
