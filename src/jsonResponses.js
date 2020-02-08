@@ -1,13 +1,14 @@
 const respond = (request, response, status, data, type) => {
+    let parseData = data;
     //differentiate between types
     if(type === 'text/xml'){
-        data = `<response><message>${data.message}</message><id>${data.id}</id></response>`;
+        parseData = `<response><message>${data.message}</message><id>${data.id}</id></response>`;
     }else {
-        data = JSON.stringify(data);
+        parseData = JSON.stringify(data);
     }
-    
+
   response.writeHead(status, { 'Content-Type': type });
-  response.write(data);
+  response.write(parseData);
   response.end();
 };
 
